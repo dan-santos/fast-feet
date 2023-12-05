@@ -1,0 +1,33 @@
+name: Run Recipient API Unit Tests
+
+on: 
+  push:
+    branches:
+      - main
+    paths:
+      - 'recipient-api/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'recipient-api/**'
+
+jobs:
+  run-unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./recipient-api
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache-dependency-path: ./recipient-api/package-lock.json
+          node-version: 18
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run test

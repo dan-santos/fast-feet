@@ -1,3 +1,4 @@
+import { PaginationParams } from 'src/core/pagination-params';
 import { Courier } from 'src/domain/couriers/entities/courier.entity';
 import { ICouriersRepository } from 'src/domain/couriers/repositories/couriers.repository';
 
@@ -19,5 +20,17 @@ export class InMemoryCouriersRepository implements ICouriersRepository {
     if (!courier) return null;
     return courier;
   }
+
+  async delete(courierEmail: string): Promise<void> {
+    const courierIndex = this.items.findIndex(c => c.email === courierEmail);
+    this.items.splice(courierIndex, 1);
+  }
   
+  async findMany(params: PaginationParams): Promise<Courier[]> {
+    const { take, skip } = params;
+
+    const couriers = this.items.slice(skip, take + skip);
+
+    return couriers;
+  }
 }

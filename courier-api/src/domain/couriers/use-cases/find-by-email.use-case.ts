@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICouriersRepository } from '../repositories/couriers.repository';
-import { isEmail } from 'src/core/utils/email-validator';
+import { isEmail } from 'src/core/utils/types-validator';
 import { Courier } from '../entities/courier.entity';
 import { InvalidEmailError } from 'src/core/errors/custom-errors';
 

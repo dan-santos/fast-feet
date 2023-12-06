@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCourierDto } from '../dto/create-courier.dto';
 import { ICouriersRepository } from '../repositories/couriers.repository';
 import { Courier } from '../entities/courier.entity';
-import { isEmail } from 'src/core/utils/email-validator';
+import { isEmail } from 'src/core/utils/types-validator';
 import { ConflictError, InvalidEmailError } from 'src/core/errors/custom-errors';
 
 @Injectable()

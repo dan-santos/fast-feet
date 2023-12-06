@@ -1,7 +1,10 @@
 import { makeCourier } from 'test/factories/makeCourier';
 import { UpdateUseCase } from './update.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
-import { InsuficientArgumentsError, InvalidEmailError, ResourceNotFoundError } from 'src/core/errors/custom-errors';
+import { 
+  ConflictError, InsuficientArgumentsError, InvalidEmailError, InvalidIdError 
+} from 'src/core/errors/custom-errors';
+import { randomUUID } from 'crypto';
 
 let sut: UpdateUseCase;
 let repository: InMemoryCouriersRepository;
@@ -14,34 +17,46 @@ describe('Update use case', () => {
   });
 
   it('should be able to update a courier', async () => {
-    repository.create(makeCourier({ email: 'joao@mail.com', name: 'joao' }));
+    const fakeCourier = makeCourier({ email: 'joao@mail.com', name: 'joao' });
+    repository.create(fakeCourier);
 
-    await sut.execute({ email: 'joao@mail.com', name: 'joao das neves' });
+    await sut.execute({ name: 'joao das neves' }, fakeCourier.id.toString());
 
     expect(repository.items[0]).toEqual(expect.objectContaining(
       { 
         props: expect.objectContaining({ 
-          name: 'joao das neves'
+          name: 'joao das neves',
+          email: 'joao@mail.com'
         }) 
       }
     ));
   });
 
-  it('should NOT be able to update a unexistent courier', async () => {
+  it('should NOT be able to update a courier email with wrong email format', async () => {
     await expect(() => 
-      sut.execute({ email: 'joao@mail.com', name: 'joao' })
-    ).rejects.toThrow(ResourceNotFoundError);
+      sut.execute({ email: 'malformed-courier-mail' }, randomUUID())
+    ).rejects.toThrow(InvalidEmailError);
   });
 
-  it('should NOT be able to update a courier without email', async () => {
+  it('should NOT be able to update a courier with wrong id format', async () => {
     await expect(() => 
-      sut.execute({})
-    ).rejects.toThrow(InvalidEmailError);
+      sut.execute({ email: 'joao@mail.com' }, 'malformed-courier-id')
+    ).rejects.toThrow(InvalidIdError);
+  });
+
+  it('should NOT be able to update a courier email to an already existent email', async () => {
+    repository.create(makeCourier({ email: 'joao.neves@mail.com' }));
+    const fakeCourier = makeCourier({ email: 'joao@mail.com' });
+    repository.create(fakeCourier);
+
+    await expect(() => 
+      sut.execute({ email: 'joao.neves@mail.com' }, fakeCourier.id.toString())
+    ).rejects.toThrow(ConflictError);
   });
 
   it('should NOT be able to update a courier without any arguments to update', async () => {
     await expect(() => 
-      sut.execute({ email: 'joao@mail.com' })
+      sut.execute({}, randomUUID())
     ).rejects.toThrow(InsuficientArgumentsError);
   });
 });

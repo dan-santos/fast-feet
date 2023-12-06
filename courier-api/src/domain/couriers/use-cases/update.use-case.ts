@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { UpdateCourierDto } from '../dto/update-courier.dto';
 import { ICouriersRepository } from '../repositories/couriers.repository';
 import { Courier } from '../entities/courier.entity';
-import { isEmail } from 'src/core/utils/email-validator';
-import { ConflictError, InsuficientArgumentsError, InvalidEmailError } from 'src/core/errors/custom-errors';
+import { isEmail, isUUID } from 'src/core/utils/types-validator';
+import { 
+  ConflictError, InsuficientArgumentsError, InvalidEmailError, InvalidIdError 
+} from 'src/core/errors/custom-errors';
 import { UniqueEntityID } from 'src/core/unique-entity-id';
 
 @Injectable()
@@ -12,10 +14,12 @@ export class UpdateUseCase {
     private couriersRepository: ICouriersRepository
   ){}
 
-  async execute(id: string, updateCourierDto: UpdateCourierDto) {
+  async execute(updateCourierDto: UpdateCourierDto, id: string) {
     if (!updateCourierDto.email && !updateCourierDto.name && !updateCourierDto.lat && !updateCourierDto.lon) {
       throw new InsuficientArgumentsError('update');
     }
+
+    if (!isUUID(id)) throw new InvalidIdError(id);
 
     const { email } = updateCourierDto;
 
@@ -26,12 +30,13 @@ export class UpdateUseCase {
       if (courier) throw new ConflictError('courier');
     }
 
+    const courier = await this.couriersRepository.findById(id);
     const updatedCourier = Courier.create(
       {
-        email,
-        name: updateCourierDto.name,
-        lat: updateCourierDto.lat,
-        lon: updateCourierDto.lon
+        email: updateCourierDto.email ?? courier.email,
+        name: updateCourierDto.name ?? courier.name,
+        lat: updateCourierDto.lat ?? courier.lat,
+        lon: updateCourierDto.lon ?? courier.lon
       },
       new UniqueEntityID(id)
     );

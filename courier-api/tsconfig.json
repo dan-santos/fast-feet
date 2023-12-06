@@ -16,8 +16,9 @@
       "@dto/*": ["./src/domain/couriers/dto/*"],
       "@repositories/*": ["./src/domain/couriers/repositories/*"],
       "@validator": ["./src/core/utils/types-validator"],
-      "@errors": ["./src/core/erros/custom-errors"],
-      "@env/*": ["./src/infra/env/*"]
+      "@errors": ["./src/core/errors/custom-errors"],
+      "@env/*": ["./src/infra/env/*"],
+      "@core/*": ["./src/core/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

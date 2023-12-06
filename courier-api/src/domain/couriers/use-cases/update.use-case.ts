@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateCourierDto } from '../dto/update-courier.dto';
-import { ICouriersRepository } from '../repositories/couriers.repository';
-import { Courier } from '../entities/courier.entity';
-import { isEmail, isUUID } from 'src/core/utils/types-validator';
+import { UpdateCourierDto } from '@dto/update-courier.dto';
+import { ICouriersRepository } from '@repositories/couriers.repository';
+import { Courier } from '@entities/courier.entity';
+import { isEmail, isUUID } from '@validator';
 import { 
   ConflictError, InsuficientArgumentsError, InvalidEmailError, InvalidIdError 
-} from 'src/core/errors/custom-errors';
+} from '@errors';
 import { UniqueEntityID } from 'src/core/unique-entity-id';
 
 @Injectable()

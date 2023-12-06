@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ICouriersRepository } from '../repositories/couriers.repository';
-import { isUUID } from 'src/core/utils/types-validator';
-import { Courier } from '../entities/courier.entity';
-import { InvalidIdError } from 'src/core/errors/custom-errors';
+import { ICouriersRepository } from '@repositories/couriers.repository';
+import { isUUID } from '@validator';
+import { Courier } from '@entities/courier.entity';
+import { InvalidIdError } from '@errors';
 
 interface FindByIdUseCaseResponse {
   courier: Courier

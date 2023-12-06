@@ -1,5 +1,5 @@
-import { Entity } from 'src/core/entity';
-import { UniqueEntityID } from 'src/core/unique-entity-id';
+import { Entity } from '@core/entity';
+import { UniqueEntityID } from '@core/unique-entity-id';
 
 export interface CourierProps {
   name?: string;

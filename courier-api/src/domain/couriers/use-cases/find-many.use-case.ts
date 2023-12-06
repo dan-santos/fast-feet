@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ICouriersRepository } from '../repositories/couriers.repository';
-import { Courier } from '../entities/courier.entity';
+import { ICouriersRepository } from '@repositories/couriers.repository';
+import { Courier } from '@entities/courier.entity';
 import { PaginationParams } from 'src/core/pagination-params';
 
 interface FindManyUseCaseResponse {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ICouriersRepository } from '../repositories/couriers.repository';
-import { isUUID } from 'src/core/utils/types-validator';
-import { InvalidIdError } from 'src/core/errors/custom-errors';
+import { ICouriersRepository } from '@repositories/couriers.repository';
+import { isUUID } from '@validator';
+import { InvalidIdError } from '@errors';
 
 @Injectable()
 export class DeleteUseCase {

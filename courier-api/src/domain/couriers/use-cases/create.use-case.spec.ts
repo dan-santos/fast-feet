@@ -1,4 +1,4 @@
-import { ConflictError, InvalidEmailError } from 'src/core/errors/custom-errors';
+import { ConflictError, InvalidEmailError } from '@errors';
 import { CreateUseCase } from './create.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
 

@@ -1,5 +1,5 @@
 import { PaginationParams } from 'src/core/pagination-params';
-import { Courier } from '../entities/courier.entity';
+import { Courier } from '@entities/courier.entity';
 
 export abstract class ICouriersRepository {
   abstract create(courier: Courier): Promise<void>;

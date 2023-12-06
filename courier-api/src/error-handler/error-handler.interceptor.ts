@@ -7,7 +7,7 @@ import {
   NestInterceptor 
 } from '@nestjs/common';
 import { Observable, catchError } from 'rxjs';
-import { CustomError } from 'src/core/errors/custom-errors';
+import { CustomError } from '@errors';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements NestInterceptor {

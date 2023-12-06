@@ -21,4 +21,16 @@ export class Courier extends Entity<CourierProps>{
   get email() {
     return this.props.email;
   }
+
+  get name() {
+    return this.props.name;
+  }
+
+  get lat() {
+    return this.props.lat;
+  }
+
+  get lon() {
+    return this.props.lon;
+  }
 }

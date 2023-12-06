@@ -10,6 +10,15 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@entities/*": ["./src/domain/couriers/entities/*"],
+      "@use-cases/*": ["./src/domain/couriers/use-cases/*"],
+      "@dto/*": ["./src/domain/couriers/dto/*"],
+      "@repositories/*": ["./src/domain/couriers/repositories/*"],
+      "@validator": ["./src/core/utils/types-validator"],
+      "@errors": ["./src/core/erros/custom-errors"],
+      "@env/*": ["./src/infra/env/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

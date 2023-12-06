@@ -3,7 +3,7 @@ import { CreateCourierDto } from '../../../domain/couriers/dto/create-courier.dt
 import { UpdateCourierDto } from '../../../domain/couriers/dto/update-courier.dto';
 import { CreateUseCase } from '../../../domain/couriers/use-cases/create.use-case';
 import { FindManyUseCase } from 'src/domain/couriers/use-cases/find-many.use-case';
-import { FindByEmailUseCase } from 'src/domain/couriers/use-cases/find-by-email.use-case';
+import { FindByIdUseCase } from 'src/domain/couriers/use-cases/find-by-id.use-case';
 import { UpdateUseCase } from 'src/domain/couriers/use-cases/update.use-case';
 import { DeleteUseCase } from 'src/domain/couriers/use-cases/delete.use-case';
 
@@ -12,7 +12,7 @@ export class CouriersController {
   constructor(
     private readonly createUseCase: CreateUseCase,
     private readonly findManyUseCase: FindManyUseCase,
-    private readonly findByEmail: FindByEmailUseCase,
+    private readonly findByIdUseCase: FindByIdUseCase,
     private readonly updateUseCase: UpdateUseCase,
     private readonly deleteUseCase: DeleteUseCase
   ) {}
@@ -28,15 +28,15 @@ export class CouriersController {
     return couriers;
   }
 
-  @Get(':email')
-  async findOne(@Param('email') email: string) {
-    const { courier } = await this.findByEmail.execute(email);
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const { courier } = await this.findByIdUseCase.execute(id);
     return courier;
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCourierDto: UpdateCourierDto) {
-    return await this.updateUseCase.execute(id, updateCourierDto);
+    return await this.updateUseCase.execute(updateCourierDto, id);
   }
 
   @Delete(':id')

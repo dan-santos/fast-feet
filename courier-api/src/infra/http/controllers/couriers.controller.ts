@@ -23,8 +23,11 @@ export class CouriersController {
   }
 
   @Get()
-  async findAll() {
-    const { couriers } = await this.findManyUseCase.execute();
+  async findAll(
+    @Param('take') take?: number,
+    @Param('skip') skip?: number
+  ) {
+    const { couriers } = await this.findManyUseCase.execute({ take, skip });
     return couriers;
   }
 
@@ -40,7 +43,7 @@ export class CouriersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.deleteUseCase.execute(id);
+  async remove(@Param('id') id: string) {
+    return await this.deleteUseCase.execute(id);
   }
 }

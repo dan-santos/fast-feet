@@ -6,6 +6,6 @@ export abstract class ICouriersRepository {
   abstract save(courier: Courier): Promise<void>;
   abstract findById(courierId: string): Promise<Courier | null>;
   abstract findByEmail(courierEmail: string): Promise<Courier | null>;
-  abstract delete(courierEmail: string): Promise<void>;
+  abstract delete(id: string): Promise<void>;
   abstract findMany(params: PaginationParams): Promise<Courier[]>;
 }

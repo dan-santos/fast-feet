@@ -34,6 +34,12 @@ export class InvalidEmailError extends CustomError {
   }
 }
 
+export class InvalidIdError extends CustomError {
+  constructor(id: string) {
+    super(`ID "${id}" is not a valid UUID string.`);
+  }
+}
+
 export class InsuficientArgumentsError extends CustomError {
   constructor(operation: string) {
     super(`Unable to "${operation}" without sufficient arguments.`);

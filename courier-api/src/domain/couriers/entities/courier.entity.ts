@@ -2,8 +2,8 @@ import { Entity } from 'src/core/entity';
 import { UniqueEntityID } from 'src/core/unique-entity-id';
 
 export interface CourierProps {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
   lat?: number | null;
   lon?: number | null;
 }

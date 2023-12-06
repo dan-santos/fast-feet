@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ICouriersRepository } from '../repositories/couriers.repository';
-import { isEmail } from 'src/core/utils/email-validator';
-import { InvalidEmailError, ResourceNotFoundError } from 'src/core/errors/custom-errors';
+import { isUUID } from 'src/core/utils/types-validator';
+import { InvalidIdError } from 'src/core/errors/custom-errors';
 
 @Injectable()
 export class DeleteUseCase {
@@ -9,13 +9,8 @@ export class DeleteUseCase {
     private couriersRepository: ICouriersRepository
   ){}
 
-  async execute(email: string) {
-    if (!isEmail(email)) throw new InvalidEmailError(email);
-
-    const courierExists = await this.couriersRepository.findByEmail(email);
-
-    if (!courierExists) throw new ResourceNotFoundError('courier');
-
-    await this.couriersRepository.delete(email);
+  async execute(id: string) {
+    if (!isUUID(id)) throw new InvalidIdError(id);
+    await this.couriersRepository.delete(id);
   }
 }

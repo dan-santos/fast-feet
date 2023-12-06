@@ -1,7 +1,8 @@
 import { makeCourier } from 'test/factories/makeCourier';
 import { DeleteUseCase } from './delete.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
-import { InvalidEmailError, ResourceNotFoundError } from 'src/core/errors/custom-errors';
+import { InvalidIdError } from 'src/core/errors/custom-errors';
+import { randomUUID } from 'node:crypto';
 
 let sut: DeleteUseCase;
 let repository: InMemoryCouriersRepository;
@@ -14,21 +15,23 @@ describe('Delete use case', () => {
   });
 
   it('should be able to delete a courier', async () => {
-    repository.create(makeCourier({ email: 'joao@mail.com' }));
-    await sut.execute('joao@mail.com');
+    const fakeCourier = makeCourier();
+    repository.create(fakeCourier);
+    await sut.execute(fakeCourier.id.toString());
 
     expect(repository.items).toHaveLength(0);
   });
 
   it('should NOT be able to delete a unexistent courier', async () => {
-    await expect(() => 
-      sut.execute('unexistent-courier@email.com')
-    ).rejects.toThrow(ResourceNotFoundError);
+    repository.create(makeCourier());
+    await sut.execute(randomUUID());
+
+    expect(repository.items).toHaveLength(1);
   });
 
-  it('should NOT be able to delete a courier with wrong email address format', async () => {
+  it('should NOT be able to delete a courier without UUID id param', async () => {
     await expect(() => 
-      sut.execute('unexistent-courier-malformed-email')
-    ).rejects.toThrow(InvalidEmailError);
+      sut.execute('malformed-courier-id')
+    ).rejects.toThrow(InvalidIdError);
   });
 });

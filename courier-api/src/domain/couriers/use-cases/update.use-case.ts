@@ -3,7 +3,8 @@ import { UpdateCourierDto } from '../dto/update-courier.dto';
 import { ICouriersRepository } from '../repositories/couriers.repository';
 import { Courier } from '../entities/courier.entity';
 import { isEmail } from 'src/core/utils/email-validator';
-import { InsuficientArgumentsError, InvalidEmailError, ResourceNotFoundError } from 'src/core/errors/custom-errors';
+import { ConflictError, InsuficientArgumentsError, InvalidEmailError } from 'src/core/errors/custom-errors';
+import { UniqueEntityID } from 'src/core/unique-entity-id';
 
 @Injectable()
 export class UpdateUseCase {
@@ -11,27 +12,28 @@ export class UpdateUseCase {
     private couriersRepository: ICouriersRepository
   ){}
 
-  async execute(updateCourierDto: UpdateCourierDto) {
-    const { email } = updateCourierDto;
-
-    if (!isEmail(email)) throw new InvalidEmailError(email);
-
-    if (!updateCourierDto.name && !updateCourierDto.lat && !updateCourierDto.lon) {
+  async execute(id: string, updateCourierDto: UpdateCourierDto) {
+    if (!updateCourierDto.email && !updateCourierDto.name && !updateCourierDto.lat && !updateCourierDto.lon) {
       throw new InsuficientArgumentsError('update');
     }
 
-    const courier = await this.couriersRepository.findByEmail(email);
+    const { email } = updateCourierDto;
 
-    if (!courier) throw new ResourceNotFoundError('courier');
+    if (email) {
+      if (!isEmail(email)) throw new InvalidEmailError(email);
+
+      const courier = await this.couriersRepository.findByEmail(email);
+      if (courier) throw new ConflictError('courier');
+    }
 
     const updatedCourier = Courier.create(
       {
         email,
-        name: updateCourierDto.name ?? courier.name,
-        lat: updateCourierDto.lat ?? courier.lat,
-        lon: updateCourierDto.lon ?? courier.lon
+        name: updateCourierDto.name,
+        lat: updateCourierDto.lat,
+        lon: updateCourierDto.lon
       },
-      courier.id
+      new UniqueEntityID(id)
     );
 
     await this.couriersRepository.save(updatedCourier);

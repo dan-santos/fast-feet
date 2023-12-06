@@ -26,9 +26,11 @@ export class InMemoryCouriersRepository implements ICouriersRepository {
     return courier;
   }
 
-  async delete(courierEmail: string): Promise<void> {
-    const courierIndex = this.items.findIndex(c => c.email === courierEmail);
-    this.items.splice(courierIndex, 1);
+  async delete(id: string): Promise<void> {
+    const courierIndex = this.items.findIndex(c => c.id.toString() === id);
+    if (courierIndex !== -1) {
+      this.items.splice(courierIndex, 1);
+    }
   }
   
   async findMany(params: PaginationParams): Promise<Courier[]> {

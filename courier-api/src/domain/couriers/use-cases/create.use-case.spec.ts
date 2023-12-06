@@ -1,3 +1,4 @@
+import { ConflictError, InvalidEmailError } from 'src/core/errors/custom-errors';
 import { CreateUseCase } from './create.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
 
@@ -22,10 +23,10 @@ describe('Create use case', () => {
 
     await expect(() => 
       sut.execute({ email: 'joao@mail.com', name: 'joao' })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(ConflictError);
   });
 
   it('should NOT be able to add a new courier with wrong email address format', () => {
-    expect(sut.execute({ email: 'joao', name: 'joao' })).rejects.toThrow(Error);
+    expect(sut.execute({ email: 'joao', name: 'joao' })).rejects.toThrow(InvalidEmailError);
   });
 });

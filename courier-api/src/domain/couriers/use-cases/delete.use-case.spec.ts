@@ -1,6 +1,7 @@
 import { makeCourier } from 'test/factories/makeCourier';
 import { DeleteUseCase } from './delete.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
+import { InvalidEmailError, ResourceNotFoundError } from 'src/core/errors/custom-errors';
 
 let sut: DeleteUseCase;
 let repository: InMemoryCouriersRepository;
@@ -22,12 +23,12 @@ describe('Delete use case', () => {
   it('should NOT be able to delete a unexistent courier', async () => {
     await expect(() => 
       sut.execute('unexistent-courier@email.com')
-    ).rejects.toThrow(Error);
+    ).rejects.toThrow(ResourceNotFoundError);
   });
 
   it('should NOT be able to delete a courier with wrong email address format', async () => {
     await expect(() => 
       sut.execute('unexistent-courier-malformed-email')
-    ).rejects.toThrow(Error);
+    ).rejects.toThrow(InvalidEmailError);
   });
 });

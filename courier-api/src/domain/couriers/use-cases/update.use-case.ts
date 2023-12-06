@@ -3,6 +3,7 @@ import { UpdateCourierDto } from '../dto/update-courier.dto';
 import { ICouriersRepository } from '../repositories/couriers.repository';
 import { Courier } from '../entities/courier.entity';
 import { isEmail } from 'src/core/utils/email-validator';
+import { InsuficientArgumentsError, InvalidEmailError, ResourceNotFoundError } from 'src/core/errors/custom-errors';
 
 @Injectable()
 export class UpdateUseCase {
@@ -13,15 +14,15 @@ export class UpdateUseCase {
   async execute(updateCourierDto: UpdateCourierDto) {
     const { email } = updateCourierDto;
 
-    if (!isEmail(email)) throw new Error(`"${email}" is not a valid email.`);
+    if (!isEmail(email)) throw new InvalidEmailError(email);
 
     if (!updateCourierDto.name && !updateCourierDto.lat && !updateCourierDto.lon) {
-      throw new Error(`Unable to update courier "${email}" without any arguments to update.`);
+      throw new InsuficientArgumentsError('update');
     }
 
     const courier = await this.couriersRepository.findByEmail(email);
 
-    if (!courier) throw new Error(`Courier with email "${email}" doesnt exists.`);
+    if (!courier) throw new ResourceNotFoundError('courier');
 
     const updatedCourier = Courier.create(
       {

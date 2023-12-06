@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ICouriersRepository } from '../repositories/couriers.repository';
 import { isEmail } from 'src/core/utils/email-validator';
 import { Courier } from '../entities/courier.entity';
+import { InvalidEmailError } from 'src/core/errors/custom-errors';
 
 interface FindByEmailUseCaseResponse {
   courier: Courier
@@ -14,7 +15,7 @@ export class FindByEmailUseCase {
   ){}
 
   async execute(email: string): Promise<FindByEmailUseCaseResponse> {
-    if (!isEmail(email)) throw new Error(`"${email}" is not a valid email.`);
+    if (!isEmail(email)) throw new InvalidEmailError(email);
 
     const courier = await this.couriersRepository.findByEmail(email);
 

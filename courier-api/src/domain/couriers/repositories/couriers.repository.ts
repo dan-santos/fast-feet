@@ -1,4 +1,4 @@
-import { PaginationParams } from 'src/core/pagination-params';
+import { PaginationParams } from '@core/pagination-params';
 import { Courier } from '@entities/courier.entity';
 
 export abstract class ICouriersRepository {

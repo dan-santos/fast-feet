@@ -3,7 +3,7 @@ import { UpdateUseCase } from './update.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
 import { 
   ConflictError, InsuficientArgumentsError, InvalidEmailError, InvalidIdError 
-} from '@errors';
+} from '@errors/custom-errors';
 import { randomUUID } from 'crypto';
 
 let sut: UpdateUseCase;

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { EnvService } from './infra/env/env.service';
+import { EnvService } from '@env/env.service';
 import { ErrorHandlerInterceptor } from './error-handler/error-handler.interceptor';
 
 async function bootstrap() {

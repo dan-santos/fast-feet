@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateCourierDto } from '@dto/create-courier.dto';
 import { ICouriersRepository } from '@repositories/couriers.repository';
 import { Courier } from '@entities/courier.entity';
-import { isEmail } from '@validator';
-import { ConflictError, InvalidEmailError } from '@errors';
+import { isEmail } from '@validator/types-validator';
+import { ConflictError, InvalidEmailError } from '@errors/custom-errors';
 
 @Injectable()
 export class CreateUseCase {

@@ -15,8 +15,8 @@
       "@use-cases/*": ["./src/domain/couriers/use-cases/*"],
       "@dto/*": ["./src/domain/couriers/dto/*"],
       "@repositories/*": ["./src/domain/couriers/repositories/*"],
-      "@validator": ["./src/core/utils/types-validator"],
-      "@errors": ["./src/core/errors/custom-errors"],
+      "@validator/*": ["./src/core/utils/*"],
+      "@errors/*": ["./src/core/errors/*"],
       "@env/*": ["./src/infra/env/*"],
       "@core/*": ["./src/core/*"]
     },

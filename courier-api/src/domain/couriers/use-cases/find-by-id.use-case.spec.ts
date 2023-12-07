@@ -1,7 +1,7 @@
 import { makeCourier } from 'test/factories/makeCourier';
 import { FindByIdUseCase } from './find-by-id.use-case';
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository';
-import { InvalidIdError } from '@errors';
+import { InvalidIdError } from '@errors/custom-errors';
 import { randomUUID } from 'node:crypto';
 
 let sut: FindByIdUseCase;

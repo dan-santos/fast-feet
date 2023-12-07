@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
-import { ICouriersRepository } from 'src/domain/couriers/repositories/couriers.repository';
+import { ICouriersRepository } from '@repositories/couriers.repository';
 import { PrismaCouriersRepository } from './prisma/repositories/prisma-couriers.repository';
 
 @Module({

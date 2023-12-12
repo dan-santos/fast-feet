@@ -4,6 +4,7 @@ import { DatabaseModule } from './infra/database/database.module';
 import { EnvModule } from './infra/env/env.module';
 import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './infra/env/env';
+import { MessagesModule } from './infra/messages/messages.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { envSchema } from './infra/env/env';
     }),
     HttpModule, 
     DatabaseModule, 
-    EnvModule
+    EnvModule, 
+    MessagesModule
   ]
 })
 export class AppModule {}

@@ -8,7 +8,7 @@ import { UpdateUseCase } from '@use-cases/update.use-case';
 import { DeleteUseCase } from '@use-cases/delete.use-case';
 import { FindByIdUseCase } from '@use-cases/find-by-id.use-case';
 import { FindManyUseCase } from '@use-cases/find-many.use-case';
-import { DeliverOrderUseCase } from 'src/domain/couriers/events/deliver-order.use-case';
+import { DeliverOrderEvent } from '@events/deliver-order.event';
 import { CollectOrderEvent } from '@events/collect-order.event';
 import { EnvModule } from '@env/env.module';
 
@@ -23,7 +23,7 @@ import { EnvModule } from '@env/env.module';
     DeleteUseCase,
     FindByIdUseCase,
     FindManyUseCase,
-    DeliverOrderUseCase,
+    DeliverOrderEvent,
     CollectOrderEvent
   ],
   imports: [

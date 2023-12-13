@@ -1,10 +1,11 @@
 import { IOrdersRepository, messagePayload } from '@repositories/orders.repository';
 import { KafkaService } from '../kafka.service';
 import { Producer } from 'kafkajs';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 @Injectable()
 export class KafkaOrdersRepository implements IOrdersRepository {
   private producer: Producer;
+  private logger = new Logger('KafkaJS');
 
   constructor(
     private kafkaService: KafkaService,
@@ -14,7 +15,8 @@ export class KafkaOrdersRepository implements IOrdersRepository {
     this.producer = this.kafkaService.makeProducer();
     const { courierId, orderId, status } = payload;
     await this.producer.connect();
-    await this.producer.send({ 
+
+    await this.producer.send({
       topic,
       messages: [
         {
@@ -23,10 +25,14 @@ export class KafkaOrdersRepository implements IOrdersRepository {
             courierId,
             status,
             createdAt: new Date().toISOString()
-          })
+          }),
+          key: orderId,
         }
       ]
     });
+
     await this.producer.disconnect();
+
+    this.logger.log(`Message sent to ${topic}`);
   }
 }

@@ -8,8 +8,8 @@ import { UpdateUseCase } from '@use-cases/update.use-case';
 import { DeleteUseCase } from '@use-cases/delete.use-case';
 import { FindByIdUseCase } from '@use-cases/find-by-id.use-case';
 import { FindManyUseCase } from '@use-cases/find-many.use-case';
-import { DeliverOrderUseCase } from '@use-cases/deliver-order.use-case';
-import { CollectOrderUseCase } from '@use-cases/collect-order.use-case';
+import { DeliverOrderUseCase } from 'src/domain/couriers/events/deliver-order.use-case';
+import { CollectOrderEvent } from '@events/collect-order.event';
 import { EnvModule } from '@env/env.module';
 
 @Module({
@@ -24,7 +24,7 @@ import { EnvModule } from '@env/env.module';
     FindByIdUseCase,
     FindManyUseCase,
     DeliverOrderUseCase,
-    CollectOrderUseCase
+    CollectOrderEvent
   ],
   imports: [
     DatabaseModule,

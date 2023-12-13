@@ -1,6 +1,6 @@
 import { PaginationParams } from 'src/core/pagination-params';
-import { Courier } from 'src/domain/couriers/entities/courier.entity';
-import { ICouriersRepository } from 'src/domain/couriers/repositories/couriers.repository';
+import { Courier } from '@entities/courier.entity';
+import { ICouriersRepository } from '@repositories/couriers.repository';
 
 export class InMemoryCouriersRepository implements ICouriersRepository {
   public items: Courier[] = [];

@@ -1,7 +1,8 @@
 import { IOrdersRepository, messagePayload } from '@repositories/orders.repository';
 import { KafkaService } from '../kafka.service';
 import { Producer } from 'kafkajs';
-
+import { Injectable } from '@nestjs/common';
+@Injectable()
 export class KafkaOrdersRepository implements IOrdersRepository {
   private producer: Producer;
 
@@ -20,7 +21,8 @@ export class KafkaOrdersRepository implements IOrdersRepository {
           value: JSON.stringify({
             orderId,
             courierId,
-            status
+            status,
+            createdAt: new Date().toISOString()
           })
         }
       ]

@@ -4,6 +4,7 @@ import {
   ExecutionContext, 
   Injectable, 
   InternalServerErrorException, 
+  Logger, 
   NestInterceptor 
 } from '@nestjs/common';
 import { Observable, catchError } from 'rxjs';
@@ -17,12 +18,13 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         catchError((err: Error) => {
+          const logger = new Logger('ErrorInterceptor');
           if (err instanceof CustomError) {
-            console.error(`[Bad Request Exception] ${err.name}:\n${err.message}\n${err.stack}`);
+            logger.error(`>> [Bad Request Exception]\n${err.stack}`);
             throw new BadRequestException(err.message);
           } else {
-            console.error(`[Uncaught Exception] ${err.name}:\n${err.message}\n${err.stack}`);
-            throw new InternalServerErrorException(err.message);
+            logger.error(`>> [Uncaught Exception]\n${err.stack}`);
+            throw new InternalServerErrorException();
           }
         })
       );

@@ -13,6 +13,7 @@
     "paths": {
       "@entities/*": ["./src/domain/couriers/entities/*"],
       "@use-cases/*": ["./src/domain/couriers/use-cases/*"],
+      "@events/*": ["./src/domain/couriers/events/*"],
       "@dto/*": ["./src/domain/couriers/dto/*"],
       "@repositories/*": ["./src/domain/couriers/repositories/*"],
       "@validator/*": ["./src/core/utils/*"],

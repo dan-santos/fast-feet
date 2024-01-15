@@ -15,7 +15,11 @@ export class UpdateUseCase {
   ){}
 
   async execute(updateRecipientDto: UpdateRecipientDto, id: string) {
-    if (!updateRecipientDto.email && !updateRecipientDto.name && !updateRecipientDto.lat && !updateRecipientDto.lon) {
+    if (!updateRecipientDto.email 
+        && !updateRecipientDto.name 
+        && !updateRecipientDto.number 
+        && !updateRecipientDto.street
+        && !updateRecipientDto.zipCode) {
       throw new InsuficientArgumentsError('update');
     }
 
@@ -35,8 +39,9 @@ export class UpdateUseCase {
       {
         email: updateRecipientDto.email ?? recipient.email,
         name: updateRecipientDto.name ?? recipient.name,
-        lat: updateRecipientDto.lat ?? recipient.lat,
-        lon: updateRecipientDto.lon ?? recipient.lon
+        number: updateRecipientDto.number ?? recipient.number,
+        street: updateRecipientDto.street ?? recipient.street,
+        zipCode: updateRecipientDto.zipCode ?? recipient.zipCode
       },
       new UniqueEntityID(id)
     );

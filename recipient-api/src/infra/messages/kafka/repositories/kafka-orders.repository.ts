@@ -34,6 +34,6 @@ export class KafkaOrdersRepository implements IOrdersRepository {
 
     await this.producer.disconnect();
 
-    this.logger.log(`Message sent to ${topic}`);
+    this.logger.log(`[${orderId}] with status ${status} has been sent to topic`);
   }
 }

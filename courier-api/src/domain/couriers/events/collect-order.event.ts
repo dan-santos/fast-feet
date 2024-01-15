@@ -18,7 +18,7 @@ export class CollectOrderEvent {
     if (!isUUID(orderId)) throw new InvalidIdError(orderId);
 
     await this.ordersRepository.sendMessage(
-      'COLLECTED_ORDERS',
+      'ORDERS',
       {
         orderId,
         courierId,

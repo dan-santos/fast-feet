@@ -69,4 +69,3 @@ model Order {
   @@index([recipientId, courierId])
   @@map("orders")
 }
-  

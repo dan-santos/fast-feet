@@ -22,7 +22,7 @@ describe('Deliver order event', () => {
 
     const topicNames = repository.topics.map(t => t.name);
     expect(repository.topics).toHaveLength(1);
-    expect(topicNames).toContain('DELIVERED_ORDERS');
+    expect(topicNames).toContain('ORDERS');
     expect(repository.topics[0].messages).toEqual(expect.arrayContaining([
       expect.objectContaining({
         courierId: fakeCourierId, orderId: fakeOrderId, status: OrderStates.DELIVERED

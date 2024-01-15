@@ -2,27 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { isUUID } from '@validator/types-validator';
 import { InvalidIdError } from '@errors/custom-errors';
 import { IOrdersRepository } from '@repositories/orders.repository';
-import { DeliverOrderDto } from '@dto/deliver-order.dto';
+import { ReturnOrderDto } from '@dto/return-order.dto';
 import { OrderStates } from '@validator/order-states.enum';
 
 @Injectable()
-export class DeliverOrderEvent {
+export class ReturnOrderEvent {
   constructor(
     private ordersRepository: IOrdersRepository,
   ){}
 
-  async execute(props: DeliverOrderDto) {
-    const { courierId, orderId } = props;
+  async execute(props: ReturnOrderDto) {
+    const { recipientId, orderId } = props;
 
-    if (!isUUID(courierId)) throw new InvalidIdError(courierId);
+    if (!isUUID(recipientId)) throw new InvalidIdError(recipientId);
     if (!isUUID(orderId)) throw new InvalidIdError(orderId);
 
     await this.ordersRepository.sendMessage(
       'ORDERS',
       {
         orderId,
-        courierId,
-        status: OrderStates.DELIVERED
+        recipientId,
+        status: OrderStates.RETURNED,
+        courierId: null
       }
     );
   }

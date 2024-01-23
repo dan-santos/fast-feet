@@ -21,6 +21,7 @@ export class CreateUseCase {
     if (recipientAlreadyExists) throw new ConflictError('recipient');
 
     const recipient = Recipient.create({ email, name, number, street, zipCode });
+    
     await this.recipientsRepository.create(recipient);
   }
 }

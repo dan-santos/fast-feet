@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { CouriersController } from './controllers/couriers.controller';
 import { OrdersController } from './controllers/orders.controller';
 import { DatabaseModule } from '../database/database.module';
 import { MessagesModule } from '../messages/messages.module';
@@ -12,7 +11,6 @@ import { EnvModule } from '@env/env.module';
 
 @Module({
   controllers: [
-    CouriersController,
     OrdersController
   ],
   providers: [

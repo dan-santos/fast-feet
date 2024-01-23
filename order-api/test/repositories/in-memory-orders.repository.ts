@@ -21,16 +21,16 @@ export class InMemoryOrdersRepository implements IOrdersRepository {
     return order;
   }
 
-  async findByRecipient(recipientId: string): Promise<Order> {
-    const order = this.items.find(c => c.id.toString() === recipientId);
-    if (!order) return null;
-    return order;
+  async findByRecipient(recipientId: string): Promise<Order[]> {
+    const orders = this.items.filter(c => c.recipientId.toString() === recipientId);
+    
+    return orders;
   }
   
-  async findByCourier(courierId: string): Promise<Order> {
-    const order = this.items.find(c => c.id.toString() === courierId);
-    if (!order) return null;
-    return order;
+  async findByCourier(courierId: string): Promise<Order[]> {
+    const orders = this.items.filter(c => c.courierId.toString() === courierId);
+    
+    return orders;
   }
 
   async delete(id: string): Promise<void> {

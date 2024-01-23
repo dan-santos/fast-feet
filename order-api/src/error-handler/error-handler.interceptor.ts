@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { Observable, catchError } from 'rxjs';
 import { CustomError } from '@errors/custom-errors';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements NestInterceptor {
@@ -20,8 +21,11 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
         catchError((err: Error) => {
           const logger = new Logger('ErrorInterceptor');
           if (err instanceof CustomError) {
-            logger.error(`>> [Bad Request Exception]\n${err.stack}`);
+            logger.error(`>> [Bad Request Exception] ${err.message}`);
             throw new BadRequestException(err.message);
+          } else if (err instanceof PrismaClientValidationError){
+            logger.error(`>> [Bad Request Exception] ${err.message}`);
+            throw new BadRequestException();
           } else {
             logger.error(`>> [Uncaught Exception]\n${err.stack}`);
             throw new InternalServerErrorException();

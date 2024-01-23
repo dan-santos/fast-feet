@@ -1,24 +1,67 @@
-import { PaginationParams } from 'src/core/pagination-params';
+import { PaginationParams } from '@core/pagination-params';
 import { Recipient } from '@entities/recipient.entity';
 import { IRecipientsRepository } from '@repositories/recipients.repository';
+import { PrismaService } from '../prisma.service';
+import { PrismaRecipientMapper } from '../mappers/recipient-mapper';
 
 export class PrismaRecipientsRepository implements IRecipientsRepository {
-  save(recipient: Recipient): Promise<void> {
-    throw new Error('Method not implemented.');
+  private prisma = new PrismaService();
+
+  async save(recipient: Recipient): Promise<void> {
+    const data = PrismaRecipientMapper.toDatabase(recipient);
+    
+    await this.prisma.recipient.update({ 
+      where: {
+        id: data.id,
+      },
+      data,
+    });
   }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.recipient.delete({
+      where: {
+        id
+      },
+    });
   }
-  findMany(params: PaginationParams): Promise<Recipient[]> {
-    throw new Error('Method not implemented.');
+
+  async findMany(params: PaginationParams): Promise<Recipient[]> {
+    const recipients = await this.prisma.recipient.findMany({
+      take: params.take,
+      skip: params.skip
+    });
+
+    return recipients.map(PrismaRecipientMapper.toDomain);
   }
-  create(recipient: Recipient): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async create(recipient: Recipient): Promise<void> {
+    const data = PrismaRecipientMapper.toDatabase(recipient);
+
+    await this.prisma.recipient.create({ data });
   }
-  findById(recipientId: string): Promise<Recipient> {
-    throw new Error('Method not implemented.');
+
+  async findById(recipientId: string): Promise<Recipient> {
+    const recipient = await this.prisma.recipient.findUnique({
+      where: {
+        id: recipientId,
+      },
+    });
+
+    if (!recipient) return null;
+
+    return PrismaRecipientMapper.toDomain(recipient);
   }
-  findByEmail(recipientEmail: string): Promise<Recipient> {
-    throw new Error('Method not implemented.');
+
+  async findByEmail(recipientEmail: string): Promise<Recipient> {
+    const recipient = await this.prisma.recipient.findUnique({
+      where: {
+        email: recipientEmail,
+      },
+    });
+
+    if (!recipient) return null;
+
+    return PrismaRecipientMapper.toDomain(recipient);
   }
 }

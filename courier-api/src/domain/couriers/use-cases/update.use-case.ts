@@ -31,6 +31,7 @@ export class UpdateUseCase {
     }
 
     const courier = await this.couriersRepository.findById(id);
+    
     const updatedCourier = Courier.create(
       {
         email: updateCourierDto.email ?? courier.email,

@@ -18,37 +18,27 @@ enum OrderStates {
 }
 
 model Courier {
-  id    String  @id @default(uuid())
-  email String  @unique
-  name  String
-  lat   Float?  @default(0.0)
-  lon   Float?  @default(0.0)
+  id     String  @id @default(uuid())
+  email  String  @unique
+  name   String
+  lat    Float?  @default(0.0)
+  lon    Float?  @default(0.0)
   orders Order[]
 
   @@index([email, lat, lon])
   @@map("couriers")
 }
 
-model Address {
-  id         String      @id @default(uuid())
-  street     String
-  number     String
-  zipCode    String      @map("zip_code")
-  recipients Recipient[]
-
-  @@index([zipCode, street])
-  @@map("addresses")
-}
-
 model Recipient {
-  id        String  @id @default(uuid())
-  email     String  @unique
-  name      String
-  address   Address @relation(fields: [addressId], references: [id])
-  addressId String  @map("address_id")
-  orders     Order[]
+  id      String  @id @default(uuid())
+  email   String  @unique
+  name    String
+  street  String
+  number  String
+  zipCode String  @map("zip_code")
+  orders  Order[]
 
-  @@index([email, addressId])
+  @@index([email])
   @@map("recipients")
 }
 
@@ -59,7 +49,7 @@ model Order {
   recipientId String    @map("recipient_id")
 
   courier   Courier? @relation(fields: [courierId], references: [id])
-  courierId String? @map("courier_id")
+  courierId String?  @map("courier_id")
 
   status OrderStates
 
@@ -69,4 +59,3 @@ model Order {
   @@index([recipientId, courierId])
   @@map("orders")
 }
-  

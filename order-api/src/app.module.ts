@@ -2,6 +2,7 @@ import { envSchema } from '@env/env';
 import { EnvModule } from '@env/env.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { MessagesModule } from './infra/messages/messages.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     EnvModule,
+    MessagesModule
   ],
   controllers: [],
   providers: [],

@@ -7,6 +7,7 @@ export const envSchema = z.object({
   KAFKA_PASSWORD: z.string(),
   KAFKA_BROKER: z.string(),
   KAFKA_ORDERS_TOPIC: z.string().default('ORDERS'),
+  KAFKA_GROUP_ID: z.string().default('ORDERS_APP'),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -1,10 +1,12 @@
 import { EnvService } from '@env/env.service';
-import { Injectable } from '@nestjs/common';
-import { Kafka, Partitioners, Producer } from 'kafkajs';
+import { MessagePayload, updateOrder } from '@events/message-received.event';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Consumer, Kafka } from 'kafkajs';
 
 @Injectable()
-export class KafkaService {
+export class KafkaService implements OnModuleInit {
   private kafka: Kafka;
+  private logger = new Logger('KafkaJS');
 
   constructor(
     private readonly env: EnvService
@@ -19,13 +21,31 @@ export class KafkaService {
       ssl: true,
     });
   }
-
-  makeProducer(): Producer {
-    const producer = this.kafka.producer({
-      allowAutoTopicCreation: true,
-      createPartitioner: Partitioners.LegacyPartitioner
+  
+  async makeConsumer(): Promise<Consumer> {
+    const consumer = this.kafka.consumer({
+      groupId: this.env.get('KAFKA_GROUP_ID')
     });
+    
+    return consumer;
+  }
+  
+  async onModuleInit() {
+    const topic = this.env.get('KAFKA_ORDERS_TOPIC');
+    const consumer = await this.makeConsumer();
 
-    return producer;
+    await consumer.connect();
+
+    await consumer.subscribe({ topic, fromBeginning: true });
+
+    this.logger.log('Order Consumer on Kafka is listenning...');
+    await consumer.run({
+      eachMessage: async ({ message }) => {
+        const data = message.value!.toString();
+        const args = JSON.parse(data) as MessagePayload;
+        await updateOrder(args);
+        this.logger.log(`Message received from ${topic}`);
+      }
+    });
   }
 }
